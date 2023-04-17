@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shoes_mall/data/database/local_database.dart';
 import 'package:shoes_mall/data/repository/database_data_source_impl.dart';
 import 'package:shoes_mall/data/repository/datastore_data_source_impl.dart';
 import 'package:shoes_mall/data/repository/network_data_source_impl.dart';
@@ -9,13 +9,11 @@ import 'package:shoes_mall/domain/repository/database_data_source.dart';
 import 'package:shoes_mall/domain/repository/datastore_data_source.dart';
 import 'package:shoes_mall/domain/repository/network_data_source.dart';
 
-part 'repository.g.dart';
 
-@Riverpod(keepAlive: true)
-Repository repository(RepositoryRef ref) {
-  final database = ref.watch(databaseDataSourceProvider);
-  final dataStore = ref.watch(dataStoreDataSourceProvider);
-  final network = ref.watch(networkDataSourceProvider);
+Repository repository() {
+  final database = DatabaseDataSourceImpl(localDatabase: LocalDatabase());
+  final dataStore = DataStoreDataSourceImpl();
+  final network = networkDataSourceImpl();
   return Repository(
     database: database,
     dataStore: dataStore,

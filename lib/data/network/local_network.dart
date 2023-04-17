@@ -1,10 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'local_network.g.dart';
-
-@Riverpod(keepAlive: true)
-Dio localNetwork(LocalNetworkRef ref) {
+Dio localNetwork() {
   final dio = Dio();
   dio.interceptors.add(
     CustomInterceptor(),

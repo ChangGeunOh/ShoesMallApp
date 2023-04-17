@@ -1,4 +1,3 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shoes_mall/common/const/database.dart';
 import 'package:shoes_mall/data/database/local_database.dart';
 import 'package:shoes_mall/domain/model/brand_data.dart';
@@ -6,13 +5,6 @@ import 'package:shoes_mall/domain/model/product_data.dart';
 import 'package:shoes_mall/domain/repository/database_data_source.dart';
 import 'package:sqflite/sqflite.dart';
 
-part 'database_data_source_impl.g.dart';
-
-@Riverpod(keepAlive: true)
-DatabaseDataSource databaseDataSource(DatabaseDataSourceRef ref) {
-  final database = ref.watch(localDatabaseProvider);
-  return DatabaseDataSourceImpl(localDatabase: database);
-}
 
 class DatabaseDataSourceImpl extends DatabaseDataSource {
   late Database database;

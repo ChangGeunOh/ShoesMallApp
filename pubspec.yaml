@@ -36,8 +36,6 @@ dependencies:
   json_annotation:
   retrofit:
   logger:
-  flutter_riverpod:
-  riverpod_generator:
   skeletons:
   go_router:
   sqflite:
@@ -48,6 +46,9 @@ dependencies:
   url_launcher:
   intl:
   flutter_svg:
+  flutter_bloc: ^8.1.2
+  bloc: ^8.1.1
+  meta: ^1.8.0
 
 
 dev_dependencies:

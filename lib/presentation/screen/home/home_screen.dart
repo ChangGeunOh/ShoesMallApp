@@ -1,53 +1,64 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shoes_mall/common/const/colors.dart';
-import 'package:shoes_mall/common/router/go_router.dart';
-import 'package:shoes_mall/domain/model/brand_data.dart';
+import 'package:shoes_mall/data/repository/repository.dart';
 import 'package:shoes_mall/domain/model/product_data.dart';
 import 'package:shoes_mall/presentation/screen/detail/detail_screen.dart';
+import 'package:shoes_mall/presentation/screen/home/bloc/home_bloc.dart';
+import 'package:shoes_mall/presentation/screen/home/bloc/home_state.dart';
 import 'package:shoes_mall/presentation/screen/home/component/home_search.dart';
 import 'package:shoes_mall/presentation/screen/home/component/top_brands.dart';
-import 'package:shoes_mall/presentation/screen/home/view_model/home_view_model.dart';
 
 import 'component/home_top_bar.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(homeViewModelProvider);
-    print(viewModel.products.length.toString());
-
-    return SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          const HomeTopBar(),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 32.0,
-            ),
-          ),
-          HomeSearch(onChange: (value) {}),
-          renderSizeBox(height: 24),
-          renderTitle('Top Brands'),
-          renderSizeBox(height: 16),
-          TopBrands(brands: viewModel.brands),
-          renderSizeBox(height: kPadding),
-          renderTitle('Popular'),
-          renderSizeBox(height: kPadding),
-          PopularList(
-            products: viewModel.products,
-            onClick: (value) {
-              ref.read(goRouterProvider).pushNamed(
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (BuildContext context) {
+        final repository = context.read<Repository>();
+        return HomeBloc(repository);
+      },
+      child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+        if (state is HomeLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        final homeData = state as HomeProductList;
+        return SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              const HomeTopBar(),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 32.0,
+                ),
+              ),
+              HomeSearch(onChange: (value) {}),
+              renderSizeBox(height: 24),
+              renderTitle('Top Brands'),
+              renderSizeBox(height: 16),
+              TopBrands(brands: homeData.brandList),
+              renderSizeBox(height: kPadding),
+              renderTitle('Popular'),
+              renderSizeBox(height: kPadding),
+              PopularList(
+                products: homeData.productList,
+                onClick: (value) {
+                  context.pushNamed(
                     DetailScreen.routeName,
                     extra: value,
                   );
-            },
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      }),
     );
   }
 

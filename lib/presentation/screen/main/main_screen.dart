@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shoes_mall/common/const/colors.dart';
 import 'package:shoes_mall/presentation/screen/cart/cart_screen.dart';
 import 'package:shoes_mall/presentation/screen/home/home_screen.dart';

@@ -1,15 +1,7 @@
 import 'package:path/path.dart';
 import 'package:shoes_mall/common/const/database.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shoes_mall/domain/model/brand_data.dart';
 import 'package:sqflite/sqflite.dart';
-
-part 'local_database.g.dart';
-
-@Riverpod(keepAlive: true)
-LocalDatabase localDatabase(LocalDatabaseRef ref) {
-  return LocalDatabase();
-}
 
 class LocalDatabase {
   Database? _database;
